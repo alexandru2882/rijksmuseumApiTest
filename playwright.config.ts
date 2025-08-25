@@ -11,7 +11,7 @@ const config: PlaywrightTestConfig = {
   workers: 3,
   reporter: [['html'], ['list']],
   use: {
-    baseURL: 'https://www.rijksmuseum.nl/api/nl/',
+    baseURL: 'https://www.rijksmuseum.nl/api/en/',
     extraHTTPHeaders: {
       'Accept': 'application/json',
     },
