@@ -1,0 +1,26 @@
+{
+  "name": "rijksmuseumapitest",
+  "version": "1.0.0",
+  "description": "API Testing for Rijksmuseum API using Playwright",
+  "main": "index.js",
+  "scripts": {
+    "test": "playwright test",
+    "test:headed": "playwright test --headed",
+    "test:debug": "playwright test --debug",
+    "show-report": "playwright show-report",
+    "codegen": "playwright codegen"
+  },
+  "keywords": [
+    "playwright",
+    "api-testing",
+    "typescript"
+  ],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@playwright/test": "^1.42.1",
+    "@types/node": "^20.11.24",
+    "dotenv": "^17.2.1",
+    "typescript": "^5.3.3"
+  }
+}
