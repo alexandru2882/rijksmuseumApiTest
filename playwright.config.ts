@@ -5,24 +5,24 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const config: PlaywrightTestConfig = {
-    testDir: './tests',
-    timeout: 30000,
-    retries: 1,
-    workers: 3,
-    reporter: [['html'], ['list']],
-    use: {
-        baseURL: 'https://www.rijksmuseum.nl/api/nl/',
-        extraHTTPHeaders: {
-            'Accept': 'application/json',
-        },
-        trace: 'on-first-retry',
+  testDir: './tests',
+  timeout: 30000,
+  retries: 1,
+  workers: 3,
+  reporter: [['html'], ['list']],
+  use: {
+    baseURL: 'https://www.rijksmuseum.nl/api/nl/',
+    extraHTTPHeaders: {
+      'Accept': 'application/json',
     },
-    projects: [
-        {
-            name: 'API Tests',
-            testMatch: /.*\.api\.spec\.ts/,
-        },
-    ],
+    trace: 'on-first-retry',
+  },
+  projects: [
+    {
+      name: 'API Tests',
+      testMatch: /.*\.api\.spec\.ts/,
+    },
+  ],
 };
 
 export default config;
