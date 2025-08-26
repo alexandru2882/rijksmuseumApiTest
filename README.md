@@ -84,7 +84,7 @@ rijksmuseumApiTest/
 ## CI/CD Pipeline
 
 The project uses GitHub Actions with:
-- Matrix testing on Node.js 18.x and 20.x
+- Matrix testing on Node.js 20.x
 - Automated security audits
 - Test artifact preservation
 - Parallel test execution
@@ -126,4 +126,5 @@ Required in `.env`:
 
 - [Rijksmuseum API Documentation](https://data.rijksmuseum.nl/object-metadata/api/)
 - [Playwright Documentation](https://playwright.dev/)
+
 - [GitHub Actions Documentation](https://docs.github.com/en/actions)
