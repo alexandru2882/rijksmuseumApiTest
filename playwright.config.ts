@@ -8,7 +8,7 @@ const config: PlaywrightTestConfig = {
   testDir: './tests',
   timeout: 30000,
   retries: 1,
-  workers: 3,
+  workers: 5,
   reporter: [['html'], ['list']],
   use: {
     baseURL: 'https://www.rijksmuseum.nl/api/en/',

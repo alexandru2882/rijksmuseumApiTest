@@ -1,15 +1,13 @@
 import { test, expect } from '@playwright/test';
 
-// API key from the assignment
-const API_KEY = '0fiuZFh4';
-const BASE_URL = 'https://www.rijksmuseum.nl/api/en';
-
+// API key from environment variable
+const API_KEY = process.env.API_KEY;
 test.describe('Rijksmuseum API Assignment Tests', () => {
 
   test.describe('Collection Retrieval Tests', () => {
 
     test('should retrieve collections with valid API key', async ({ request }) => {
-      const response = await request.get(`${BASE_URL}/collection?key=${API_KEY}`);
+      const response = await request.get(`collection?key=${API_KEY}`);
 
       expect(response.ok()).toBeTruthy();
       expect(response.status()).toBe(200);
@@ -22,7 +20,7 @@ test.describe('Rijksmuseum API Assignment Tests', () => {
     });
 
     test('should retrieve collections with pagination', async ({ request }) => {
-      const response = await request.get(`${BASE_URL}/collection?key=${API_KEY}&p=1&ps=10`);
+      const response = await request.get(`collection?key=${API_KEY}&p=1&ps=10`);
 
       expect(response.ok()).toBeTruthy();
       expect(response.status()).toBe(200);
@@ -36,7 +34,7 @@ test.describe('Rijksmuseum API Assignment Tests', () => {
 
     test('should retrieve collections with search query', async ({ request }) => {
       const searchQuery = 'Rembrandt';
-      const response = await request.get(`${BASE_URL}/collection?key=${API_KEY}&q=${encodeURIComponent(searchQuery)}`);
+      const response = await request.get(`collection?key=${API_KEY}&q=${encodeURIComponent(searchQuery)}`);
 
       expect(response.ok()).toBeTruthy();
       expect(response.status()).toBe(200);
@@ -55,7 +53,7 @@ test.describe('Rijksmuseum API Assignment Tests', () => {
 
     test('should retrieve collections with artist filter', async ({ request }) => {
       const artist = 'Rembrandt van Rijn';
-      const response = await request.get(`${BASE_URL}/collection?key=${API_KEY}&involvedMaker=${encodeURIComponent(artist)}`);
+      const response = await request.get(`collection?key=${API_KEY}&involvedMaker=${encodeURIComponent(artist)}`);
 
       expect(response.ok()).toBeTruthy();
       expect(response.status()).toBe(200);
@@ -73,7 +71,7 @@ test.describe('Rijksmuseum API Assignment Tests', () => {
 
     test('should retrieve collections with date range filter', async ({ request }) => {
       // Test single period filter (17th century)
-      const response = await request.get(`${BASE_URL}/collection?key=${API_KEY}&f.dating.period=17`);
+      const response = await request.get(`collection?key=${API_KEY}&f.dating.period=17`);
 
       expect(response.ok()).toBeTruthy();
       expect(response.status()).toBe(200);
@@ -87,14 +85,14 @@ test.describe('Rijksmuseum API Assignment Tests', () => {
     });
 
     test('should handle invalid API key gracefully', async ({ request }) => {
-      const response = await request.get(`${BASE_URL}/collection?key=invalid_key`);
+      const response = await request.get(`collection?key=invalid_key`);
 
       // API should return an error for invalid key
       expect(response.status()).toBe(401);
     });
 
     test('should handle missing API key gracefully', async ({ request }) => {
-      const response = await request.get(`${BASE_URL}/collection`);
+      const response = await request.get(`collection`);
 
       // API should return an error for missing key
       expect(response.status()).toBe(401);
@@ -105,7 +103,7 @@ test.describe('Rijksmuseum API Assignment Tests', () => {
 
     test('should retrieve detailed information for a specific art object', async ({ request }) => {
       // First get a collection to find an object ID
-      const collectionResponse = await request.get(`${BASE_URL}/collection?key=${API_KEY}&ps=1`);
+      const collectionResponse = await request.get(`collection?key=${API_KEY}&ps=1`);
       expect(collectionResponse.ok()).toBeTruthy();
 
       const collectionData = await collectionResponse.json();
@@ -115,7 +113,7 @@ test.describe('Rijksmuseum API Assignment Tests', () => {
       expect(objectId).toBeDefined();
 
       // Now get detailed information for this object
-      const detailResponse = await request.get(`${BASE_URL}/collection/${objectId}?key=${API_KEY}`);
+      const detailResponse = await request.get(`collection/${objectId}?key=${API_KEY}`);
       expect(detailResponse.ok()).toBeTruthy();
       expect(detailResponse.status()).toBe(200);
 
@@ -128,14 +126,14 @@ test.describe('Rijksmuseum API Assignment Tests', () => {
 
     test('should retrieve object details with all available fields', async ({ request }) => {
       // Get a collection to find an object ID
-      const collectionResponse = await request.get(`${BASE_URL}/collection?key=${API_KEY}&ps=1`);
+      const collectionResponse = await request.get(`collection?key=${API_KEY}&ps=1`);
       expect(collectionResponse.ok()).toBeTruthy();
 
       const collectionData = await collectionResponse.json();
       const objectId = collectionData.artObjects[0].objectNumber;
 
       // Get detailed information
-      const detailResponse = await request.get(`${BASE_URL}/collection/${objectId}?key=${API_KEY}`);
+      const detailResponse = await request.get(`collection/${objectId}?key=${API_KEY}`);
       expect(detailResponse.ok()).toBeTruthy();
 
       const detailData = await detailResponse.json();
@@ -152,7 +150,7 @@ test.describe('Rijksmuseum API Assignment Tests', () => {
 
     test('should handle non-existent object ID gracefully', async ({ request }) => {
       const nonExistentId = 'SK-A-999999';
-      const response = await request.get(`${BASE_URL}/collection/${nonExistentId}?key=${API_KEY}`);
+      const response = await request.get(`collection/${nonExistentId}?key=${API_KEY}`);
 
       // Note: The API returns 200 with artObject: null for non-existent objects
       // This is different from typical REST APIs that return 404
@@ -165,14 +163,14 @@ test.describe('Rijksmuseum API Assignment Tests', () => {
 
     test('should retrieve object details with different languages', async ({ request }) => {
       // Get a collection to find an object ID
-      const collectionResponse = await request.get(`${BASE_URL}/collection?key=${API_KEY}&ps=1`);
+      const collectionResponse = await request.get(`collection?key=${API_KEY}&ps=1`);
       expect(collectionResponse.ok()).toBeTruthy();
 
       const collectionData = await collectionResponse.json();
       const objectId = collectionData.artObjects[0].objectNumber;
 
       // Test Dutch language
-      const dutchResponse = await request.get(`${BASE_URL.replace('/en/', '/nl/')}/collection/${objectId}?key=${API_KEY}`);
+      const dutchResponse = await request.get(`../nl/collection/${objectId}?key=${API_KEY}`);
       expect(dutchResponse.ok()).toBeTruthy();
 
       const dutchData = await dutchResponse.json();
@@ -183,7 +181,7 @@ test.describe('Rijksmuseum API Assignment Tests', () => {
   test.describe('API Behavior and Edge Cases', () => {
 
     test('should handle large page sizes appropriately', async ({ request }) => {
-      const response = await request.get(`${BASE_URL}/collection?key=${API_KEY}&ps=1000`);
+      const response = await request.get(`collection?key=${API_KEY}&ps=1000`);
 
       expect(response.ok()).toBeTruthy();
 
@@ -195,7 +193,7 @@ test.describe('Rijksmuseum API Assignment Tests', () => {
 
     test('should handle special characters in search queries', async ({ request }) => {
       const specialQuery = 'café & museum';
-      const response = await request.get(`${BASE_URL}/collection?key=${API_KEY}&q=${encodeURIComponent(specialQuery)}`);
+      const response = await request.get(`collection?key=${API_KEY}&q=${encodeURIComponent(specialQuery)}`);
 
       expect(response.ok()).toBeTruthy();
 
@@ -205,7 +203,7 @@ test.describe('Rijksmuseum API Assignment Tests', () => {
 
     test('should handle empty search results gracefully', async ({ request }) => {
       const impossibleQuery = 'xyz123nonexistent';
-      const response = await request.get(`${BASE_URL}/collection?key=${API_KEY}&q=${encodeURIComponent(impossibleQuery)}`);
+      const response = await request.get(`collection?key=${API_KEY}&q=${encodeURIComponent(impossibleQuery)}`);
 
       expect(response.ok()).toBeTruthy();
 
@@ -216,7 +214,7 @@ test.describe('Rijksmuseum API Assignment Tests', () => {
     });
 
     test('should validate response structure consistency', async ({ request }) => {
-      const response = await request.get(`${BASE_URL}/collection?key=${API_KEY}&ps=5`);
+      const response = await request.get(`collection?key=${API_KEY}&ps=5`);
 
       expect(response.ok()).toBeTruthy();
 
