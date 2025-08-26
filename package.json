@@ -1,5 +1,8 @@
 {
   "name": "rijksmuseumapitest",
+  "engines": {
+    "node": ">=20.0.0"
+  },
   "version": "1.0.0",
   "description": "API Testing for Rijksmuseum API using Playwright",
   "main": "index.js",

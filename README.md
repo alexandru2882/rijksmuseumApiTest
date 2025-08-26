@@ -13,7 +13,7 @@ A comprehensive test suite for the Rijksmuseum API using Playwright and TypeScri
 
 ## Prerequisites
 
-- Node.js (18.x or 20.x)
+- Node.js 20.x
 - npm (included with Node.js)
 - Git
 
