@@ -1,175 +1,129 @@
 # Rijksmuseum API Test Suite
 
-This project contains automated API tests for the Rijksmuseum API using Playwright and TypeScript. It provides a robust framework for testing the Rijksmuseum's public API endpoints.
+A comprehensive test suite for the Rijksmuseum API using Playwright and TypeScript, featuring parallel test execution, GitHub Actions integration, and extensive API coverage.
+
+## Features
+
+- 🚀 Parallel test execution with 5 workers
+- 🔄 GitHub Actions CI/CD integration
+- 🔒 Security audit integration
+- 📊 Comprehensive test reporting
+- 🌐 Multi-language API testing
+- ⚡ Matrix testing across Node.js versions
 
 ## Prerequisites
 
-Before you begin, ensure you have the following installed:
-- [Node.js](https://nodejs.org/) (version 16 or higher)
-- [npm](https://www.npmjs.com/) (usually comes with Node.js)
-- A code editor (VS Code recommended)
+- Node.js (18.x or 20.x)
+- npm (included with Node.js)
+- Git
 
-## Installation
+## Quick Start
 
-1. Clone the repository:
+1. Clone and setup:
 ```bash
 git clone https://github.com/alexandru2882/rijksmuseumApiTest.git
 cd rijksmuseumApiTest
-```
-
-2. Install dependencies:
-```bash
 npm install
+npx playwright install --with-deps
 ```
 
-3. Install Playwright browsers:
+2. Create `.env` file:
 ```bash
-npx playwright install
+API_KEY=your_api_key_here
 ```
 
-## Configuration
-
-1. Get your API key from the Rijksmuseum:
-   - Visit [Rijksmuseum Research Services](https://www.rijksmuseum.nl/en/research/conduct-research/data)
-   - Register for an API key
-   - Copy your API key
-
-2. Create a `.env` file in the project root:
+3. Run tests:
 ```bash
-touch .env
-```
-
-3. Add your API key to the `.env` file:
-```plaintext
-RIJKSMUSEUM_API_KEY=your_api_key_here
+npm test
 ```
 
 ## Project Structure
 
 ```
 rijksmuseumApiTest/
-├── node_modules/           # Dependencies
-├── tests/                 # Test files
-│   └── example.api.spec.ts
-├── playwright.config.ts   # Playwright configuration
-├── package.json          # Project configuration and scripts
-├── tsconfig.json        # TypeScript configuration
-└── README.md           # Project documentation
+├── .github/
+│   └── workflows/        # GitHub Actions workflow
+│       └── main.yml     # CI/CD configuration
+├── tests/
+│   └── rijksmuseum.api.spec.ts  # API test suite
+├── playwright.config.ts  # Test configuration
+├── package.json         # Project dependencies
+├── tsconfig.json       # TypeScript configuration
+└── README.md          # Documentation
 ```
+
+## Test Categories
+
+### 1. Collection Retrieval Tests
+- Basic collection access
+- Pagination functionality
+- Search capabilities
+- Artist filtering
+- Period/date filtering
+- Error handling
+
+### 2. Object Details Tests
+- Detailed artwork information
+- Field validation
+- Multi-language support
+- Error scenarios
+
+### 3. API Behavior Tests
+- Large result sets
+- Special character handling
+- Empty results
+- Response structure validation
 
 ## Available Scripts
 
-- Run all tests:
-```bash
-npm test
-```
+- `npm test` - Run all tests in parallel
+- `npm run test:headed` - Run tests with browser UI
+- `npm run test:debug` - Run tests in debug mode
+- `npm run show-report` - View HTML test report
 
-- Run tests in headed mode (with browser UI):
-```bash
-npm run test:headed
-```
+## CI/CD Pipeline
 
-- Run tests in debug mode:
-```bash
-npm run test:debug
-```
+The project uses GitHub Actions with:
+- Matrix testing on Node.js 18.x and 20.x
+- Automated security audits
+- Test artifact preservation
+- Parallel test execution
+- Comprehensive reporting
 
-- Show the HTML report of the last test run:
-```bash
-npm run show-report
-```
+## Configuration
 
-## First Run Experience
+### Playwright Config (playwright.config.ts)
+- 5 parallel workers
+- 30-second timeout
+- Automatic retries
+- HTML and list reporting
 
-1. After installation, verify the setup:
-```bash
-npx playwright test --list
-```
-This should show the available tests.
-
-2. Run your first test:
-```bash
-npm test
-```
-Note: Make sure you've added your API key to the `.env` file before running tests.
-
-3. View the test report:
-```bash
-npm run show-report
-```
-
-## Writing Tests
-
-Tests are written in TypeScript using the Playwright test framework. Here's a basic example:
-
-```typescript
-import { test, expect } from '@playwright/test';
-
-test.describe('Rijksmuseum API Tests', () => {
-  test('should get collection details', async ({ request }) => {
-    const response = await request.get(`collection?key=${process.env.RIJKSMUSEUM_API_KEY}`);
-    
-    expect(response.ok()).toBeTruthy();
-    expect(response.status()).toBe(200);
-    
-    const data = await response.json();
-    expect(data).toBeDefined();
-  });
-});
-```
-
-## Browser Support
-
-This test suite supports running tests in:
-- Chromium
-- Firefox
-- WebKit
-
-To run tests in a specific browser:
-```bash
-npm test -- --project=chromium
-npm test -- --project=firefox
-npm test -- --project=webkit
-```
-
-## CI/CD Integration
-
-The project is ready for CI/CD integration. The Playwright configuration is optimized for both local development and CI environments.
+### Environment Variables
+Required in `.env`:
+- `API_KEY`: Your Rijksmuseum API key
 
 ## Troubleshooting
 
-If you encounter any issues:
+1. **Tests Failing**
+   - Verify API key in `.env`
+   - Check Node.js version compatibility
+   - Review test report for details
 
-1. Verify your Node.js version:
-```bash
-node --version
-```
-
-2. Check if Playwright browsers are installed:
-```bash
-npx playwright install --help
-```
-
-3. Ensure your API key is correctly set in the `.env` file
-
-4. For WSL users on Windows, ensure you have the necessary dependencies:
-```bash
-npx playwright install-deps
-```
+2. **CI Pipeline Issues**
+   - Ensure GitHub Actions are enabled
+   - Check workflow permissions
+   - Verify secrets configuration
 
 ## Contributing
 
 1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+2. Create your feature branch
+3. Add tests for new features
+4. Ensure all tests pass
+5. Create a pull request
 
-## License
-
-This project is licensed under the ISC License - see the `package.json` file for details.
-
-## Acknowledgments
+## Resources
 
 - [Rijksmuseum API Documentation](https://data.rijksmuseum.nl/object-metadata/api/)
 - [Playwright Documentation](https://playwright.dev/)
+- [GitHub Actions Documentation](https://docs.github.com/en/actions)
